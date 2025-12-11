@@ -3,6 +3,7 @@ name: Final Exam CI
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -10,17 +11,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: pip install pytest pytest-mock
-      - run: pytest test_brute.py -v
+      - name: Install dependencies
+        run: pip install pytest pytest-mock pytest-describe
+      - name: Run unit tests
+        run: pytest test_brute.py -v
 
   system-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: pytest test_christmas_list.py -v
+      - name: Install pytest
+        run: pip install pytest
+      - name: Run system tests
+        run: pytest test_christmas_list.py -v
